@@ -5,36 +5,32 @@ import 'package:hex_color_me/hex_color_me.dart';
 import 'detail_controller.dart';
 
 class DetailScreen extends GetView<DetailController> {
-  DetailScreen({super.key});
-  // RxBool isFavorit = false.obs;
-
-  // void favorit() {
-  //   isFavorit != isFavorit;
-  // }
+  const DetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Football'),
+        title: const Text('Favorit'),
         backgroundColor: Colors.blue,
-        actions: const [
-          // IconButton(
-          //     onPressed: () {
-          //       favorit();
-          //     },
-          //     icon: isFavorit
-          //         ? Icon(
-          //             Icons.favorite_border,
-          //           )
-          //         : Icon(Icons.favorite)),
+        actions: [
+          Obx(() => IconButton(
+                icon: Icon(
+                  // ignore: invalid_use_of_protected_member
+                  controller.iconWidget.value[controller.iconIndex.value],
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  controller.onLike();
+                },
+              ))
         ],
       ),
       body: Column(
         children: [
           SingleChildScrollView(
-            // dragStartBehavior: DragStartBehavior.start,
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -71,68 +67,39 @@ class DetailScreen extends GetView<DetailController> {
                 const SizedBox(width: 30),
                 Column(
                   children: [
-                    const Text(
+                    Text(
                       'Nama Club : ',
                       style: TextStyle(
                         fontSize: 17,
-                        color: Colors.black,
+                        color: HexColor(controller.data.read('warna')),
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       controller.data.read('namaklub'),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: HexColor(controller.data.read('warna')),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
+                    Text(
                       'Nama Stadion : ',
                       style: TextStyle(
                         fontSize: 17,
-                        color: Colors.black,
+                        color: HexColor(controller.data.read('warna')),
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       controller.data.read('namastadion'),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: HexColor(controller.data.read('warna')),
                       ),
                     ),
-                    // TextButton(
-                    //   onPressed: () async {
-                    //     EasyLoading.show(status: 'loading...');
-                    //     Alert(
-                    //       context: context,
-                    //       image: Image(
-                    //         image: NetworkImage(
-                    //           saveStorage.read("locstadion"),
-                    //         ),
-                    //       ),
-                    //       desc:
-                    //           '${saveStorage.read('kapasitas')}\nKapasitas stadium ${saveStorage.read('fotostadion')}',
-                    //     ).show();
-                    //     await Future.delayed(
-                    //       const Duration(
-                    //         seconds: 2,
-                    //       ),
-                    //     );
-                    //     //EasyLoading.dismiss();
-                    //   },
-                    //   child: Text(
-                    //     saveStorage.read('stadion'),
-                    //     style: const TextStyle(
-                    //       fontSize: 22,
-                    //       fontWeight: FontWeight.bold,
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    //)
                   ],
                 ),
                 const SizedBox(width: 10),
@@ -142,23 +109,23 @@ class DetailScreen extends GetView<DetailController> {
           Expanded(
             child: ListView(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 30, top: 40),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, top: 40),
                   child: Text(
                     'Deskripsi Club',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: HexColor(controller.data.read('warna')),
                     ),
                   ),
                 ),
                 const SizedBox(height: 5),
-                const Text(
+                Text(
                   '===================================================',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black,
+                    color: HexColor(controller.data.read('warna')),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -166,10 +133,10 @@ class DetailScreen extends GetView<DetailController> {
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Text(
                     controller.data.read('deskripsi'),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: HexColor(controller.data.read('warna')),
                     ),
                   ),
                 ),

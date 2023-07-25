@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,23 +15,37 @@ import 'dummy_favorit.dart';
 import 'dummy_state.dart';
 
 class DummyScreen extends GetView<DummyController> {
-  DummyScreen({Key? key}) : super(key: key);
+  const DummyScreen({Key? key}) : super(key: key);
 
   // RxInt _currentIndex = 0.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: _body(),
       bottomNavigationBar: _buildBarNavigation(),
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: const Text("Football"),
+      //title: const Text("Football"),
       backgroundColor: Colors.blue,
+      toolbarHeight: 80,
+      flexibleSpace: Center(
+        child: Container(
+          margin: const EdgeInsets.only(left: 20, right: 20),
+          child: TextField(
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+            cursorColor: Colors.white,
+            controller: controller.controllerText,
+            onChanged: (text) {
+              controller.seacrh(text);
+            },
+          ),
+        ),
+      ),
     );
   }
 
@@ -87,19 +103,24 @@ class DummyScreen extends GetView<DummyController> {
         padding: const EdgeInsets.all(8.0),
         mainAxisSpacing: 8.0,
         crossAxisSpacing: 8.0,
-        children: listData.map((fottball) => _itemFootball(fottball)).toList());
+        children: controller.filterClub
+            .map((football) => _itemFootball(football))
+            .toList());
   }
 
   Widget _itemFootball(SampleModel klub) {
     return GestureDetector(
       onTap: () {
-        controller.data.write('namaklub', klub.name);
-        controller.data.write('logoklub', klub.image);
-        controller.data.write('deskripsi', klub.desc);
-        controller.data.write('namastadion', klub.nameStadium);
-        controller.data.write('warna', klub.warna);
+        controller.data.write('namaklub', klub.name!);
+        controller.data.write('logoklub', klub.image!);
+        controller.data.write('deskripsi', klub.desc!);
+        controller.data.write('namastadion', klub.nameStadium!);
+        controller.data.write('warna', klub.warna!);
+        controller.data.write('dataFavorit', klub);
+        //print("ini adalah ${jsonEncode(klub)}");
 
-        Get.toNamed(AppRoute.detail);
+        Get.toNamed(AppRoute.detail,
+            arguments: controller.data.read('namaklub'));
       },
       child: GridTile(
         // footer: GridTileBar(
